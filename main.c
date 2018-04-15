@@ -55,16 +55,13 @@ void showHelpMessage(void);
 
 int main(int argc, char** argv) 
 {
-    printf("\n\nMakeMeALine:\n");
-    
-
     g_ValueToInsert = g_StartValue;
         
     // check command line arguments 
     checkCmdlineArguments(argc, argv);
     
     // start
-    printf("\n\nMakeMeALine:\n");
+    fprintf(fp, "\nmakealine:\n");
     
     // open file 
     fp = fopen("out.txt", "w");
@@ -90,14 +87,6 @@ uint16_t checkCmdlineArguments(int NumberOfArguments, char** p_Argument)
     p_ShowArguments = p_Argument;
     ShowNumbOfArg = NumberOfArguments;
     
-    printf("no of arguments: %i\n", NumberOfArguments);
-    printf("argv list: ");
-    while (--ShowNumbOfArg > 0)
-    {
-      printf("%s ", *(++p_ShowArguments));
-    } 
-    
-    
     /* check command line arguments */
     switch (NumberOfArguments)
     {
@@ -110,11 +99,11 @@ uint16_t checkCmdlineArguments(int NumberOfArguments, char** p_Argument)
         
         case 2:
         {
-            if (strcmp((*(p_Argument+1)), "-help") == 0)
+            if (strcmp((*(p_Argument+1)), "--help") == 0)
             {
-                /* display help info */
+                // display help info 
                 showHelpMessage();
-                return (EXIT_SUCCESS);
+                exit (EXIT_SUCCESS);
             }
             else
             {
@@ -137,10 +126,7 @@ uint16_t checkCmdlineArguments(int NumberOfArguments, char** p_Argument)
                 g_StartValue = 1;                       
                 
             // convert 2. argument to LineToConvert 
-            gp_Input = *(p_Argument+2);
-
-            printf("\n 2 arguments passed - end value: %u\n", g_EndValue);
-            printf("                           line: %s\n", *(p_Argument+2));            
+            gp_Input = *(p_Argument+2);            
             break;
         }
         
@@ -171,11 +157,6 @@ uint16_t checkCmdlineArguments(int NumberOfArguments, char** p_Argument)
             
             /* convert 3. argument to LineToConvert */
             gp_Input = *(p_Argument+3);
-
-            printf("\n 3 arguments passed - start value: %u\n", g_StartValue);
-            printf("                        end value: %u\n", g_EndValue);
-            printf("                             line: %s\n", gp_Input);              
-            
             break;
         }
         
@@ -387,11 +368,69 @@ uint16_t raisingTenToPowerOf(uint16_t Exponent)
 
 void showErrorMessage(void)
 {
-    printf("\ninvalid argument(s) - check with '-help' for correct line arguments.\n");
+    printf("\ninvalid argument(s) - check with '--help' for correct line arguments.\n");
 }
 
 
 void showHelpMessage(void)
 {
-    printf("\nhelp message\n");   
+
+    printf("Name: ");   
+    printf("makealine \n");
+    printf("\n");
+    
+    printf("Synopsis: ");
+    printf("makealine [FIRSTNUMBER] FINALNUMBER STRING");
+    printf("\n\n");
+    
+    printf("Description: Makealine is a little tool that takes a string and\n");
+    printf("creates a text file \"out.txt\" where it replaces the wildcards #* \n");
+    printf("or #? with numbers.\n"); 
+    printf("\n");
+    
+    printf("Example: makealine 1 4 \"Register#* = 0xFF;\"\n");
+    printf("  Register1 = 0xFF;\n");
+    printf("  Register2 = 0xFF;\n");
+    printf("  Register3 = 0xFF;\n");
+    printf("  Register4 = 0xFF;\n");
+    printf("\n"); 
+    
+    printf("FIRSTNUMBER is the number makealine starts with. If FIRSTNUMBER is\n");
+    printf("omitted then it starts with one. Makealine replaces the wildcards\n");
+    printf("with increasing numbers until it reaches FINALNUMBER. This is the \n");
+    printf("last number.\n");
+    printf("STRING is a string that has to contain either the #* or the #? \n");
+    printf("wildcards.\n");   
+    printf("\n");
+    
+    printf("The #* wildcard:\n");
+    printf("  for every occurrence in the line the wildcard gets replaced with \n");
+    printf("  the same number. In the next line the number gets increased.\n");
+    printf("  Example: makealine 1 4 \"Register#* = #*;\"\n");
+    printf("    Register1 = 1;\n");
+    printf("    Register2 = 2;\n");
+    printf("    Register3 = 3;\n");
+    printf("    Register4 = 4;\n");
+    printf("  The number of asterisks gives the number of leading zeros. \n");
+    printf("  Example: makealine 1 4 \"Register#*** = #**;\" \n");
+    printf("    Register001 = 01;\n");
+    printf("    Register002 = 02;\n");
+    printf("    Register003 = 03;\n");
+    printf("    Register004 = 04;\n");
+    printf("\n");  
+
+    printf("The #? wildcard:\n");
+    printf("  for every occurrence in the line the wildcard gets replaced with\n");
+    printf("  an increasing number.\n");
+    printf("  Example: makealine 1 4 \"Register#? = #?;\" \n");
+    printf("    Register1 = 2;\n");
+    printf("    Register3 = 4;\n");
+    printf("    Register5 = 6;\n");
+    printf("    Register7 = 8;\n");
+    printf("  The number of questionmarks gives the number of leading zeros.\n");
+    printf("  Example: makealine 1 4 \"Register#??? = #??;\" \n");
+    printf("    Register001 = 02;\n");
+    printf("    Register003 = 04;\n");
+    printf("    Register005 = 06;\n");
+    printf("    Register007 = 08;\n");
 }
