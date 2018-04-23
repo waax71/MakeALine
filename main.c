@@ -55,10 +55,10 @@ void showHelpMessage(void);
 
 int main(int argc, char** argv) 
 {
-    g_ValueToInsert = g_StartValue;
-        
     // check command line arguments 
     checkCmdlineArguments(argc, argv);
+
+    g_ValueToInsert = g_StartValue;
     
     // start
     fprintf(fp, "\nmakealine:\n");
@@ -265,13 +265,16 @@ uint16_t convertLine(char *p_LineToConvert, uint16_t Number, uint16_t LastNumber
                     default:
                         /* next char is not a star, write number*/
                         if (DecimalPlaceCntr == 1){
-                        /* write number without leading zeros */
+                            /* write number without leading zeros */
                             fprintf(fp, "%u", Number);    
                             p_Character += 2;
-                            State = NO_HASH;                            
+                            if (*p_Character == CHAR_END)
+                                State = END;  
+                            else
+                                State = NO_HASH;                            
                         }
                         else{
-                        /* write leading zeros first, then number */
+                            /* write leading zeros first, then number */
                             uint16_t MoveNumberOfPositions;
                             MoveNumberOfPositions = DecimalPlaceCntr;
                             do {
@@ -285,8 +288,11 @@ uint16_t convertLine(char *p_LineToConvert, uint16_t Number, uint16_t LastNumber
                                     DecimalPlaceCntr = 0;
                                 }  
                             }while (DecimalPlaceCntr != 0);
-                            p_Character += MoveNumberOfPositions+2;
-                            State = NO_HASH;  
+                            p_Character += MoveNumberOfPositions+1;
+                            if (*p_Character == CHAR_END)
+                                State = END;  
+                            else
+                                State = NO_HASH;      
                         } 
                     break;                                                                                
                 }               
@@ -312,7 +318,14 @@ uint16_t convertLine(char *p_LineToConvert, uint16_t Number, uint16_t LastNumber
                         /* write number without leading zeros */
                             fprintf(fp, "%u", Number);    
                             p_Character += 2;
-                            State = NO_HASH; 
+                            if (*p_Character == CHAR_END)
+                            {
+                                State = END;  
+                            }
+                            else
+                            {                           
+                                State = NO_HASH; 
+                            }
                             Number++;
                         }
                         else{
@@ -331,8 +344,14 @@ uint16_t convertLine(char *p_LineToConvert, uint16_t Number, uint16_t LastNumber
                                     Number++;
                                 }  
                             }while (DecimalPlaceCntr != 0);
-                            p_Character += MoveNumberOfPositions+2;
-                            State = NO_HASH;  
+                            p_Character += MoveNumberOfPositions+1;
+                            if (*p_Character == CHAR_END)
+                                State = END;  
+                            else
+                            {                           
+                                State = NO_HASH; 
+                                Number++;
+                            }                            
                         }
                     break;                                                                                
                 }               
