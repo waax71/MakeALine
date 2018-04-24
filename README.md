@@ -1,12 +1,15 @@
-Name: makealine
+# makealine
 
-Synopsis: makealine [FIRSTNUMBER] FINALNUMBER STRING
+## Synopsis: 
+makealine [FIRSTNUMBER] FINALNUMBER STRING
 
-Description: Makealine is a little tool that takes a string and
+## Description: 
+Makealine is a little tool that takes a string and
 creates a text file "out.txt" where it replaces the wildcards #*
 or #? with numbers.
 
-Example: makealine 1 4 "Register#* = 0xFF;"
+### Example: 
+makealine 1 4 "Register#* = 0xFF;"
 
     Register1 = 0xFF;
 
@@ -16,6 +19,7 @@ Example: makealine 1 4 "Register#* = 0xFF;"
 
     Register4 = 0xFF;
 
+
 FIRSTNUMBER is the number makealine starts with. If FIRSTNUMBER is
 omitted then it starts with one. Makealine replaces the wildcards
 with increasing numbers until it reaches FINALNUMBER. This is the
@@ -23,12 +27,15 @@ last number.
 STRING is a string that has to contain either the #* or the #?
 wildcards.
 
+
 The #* wildcard:
 
 for every occurrence in the line the wildcard gets replaced with
 the same number. In the next line the number gets increased.
 
-Example: makealine 1 4 "Register#* = #*;"
+
+### Example: 
+makealine 1 4 "Register#* = #*;"
 
     Register1 = 1;
     
@@ -39,9 +46,12 @@ Example: makealine 1 4 "Register#* = #*;"
     Register4 = 4;
     
     
+    
   The number of asterisks gives the number of leading zeros.
   
-  Example: makealine 1 4 "Register#*** = #**;"
+  
+  ### Example: 
+  makealine 1 4 "Register#*** = #**;"
     
     Register001 = 01;
     
@@ -51,7 +61,8 @@ Example: makealine 1 4 "Register#* = #*;"
     
     Register004 = 04;
 
-
+ 
+ 
 The #? wildcard:
 
   for every occurrence in the line the wildcard gets replaced with
@@ -69,7 +80,9 @@ The #? wildcard:
     
   The number of questionmarks gives the number of leading zeros.
   
-  Example: makealine 1 4 "Register#??? = #??;"
+  
+  ### Example: 
+  makealine 1 4 "Register#??? = #??;"
   
     Register001 = 02;
     
