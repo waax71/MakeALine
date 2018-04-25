@@ -350,7 +350,6 @@ uint16_t convertLine(char *p_LineToConvert, uint16_t Number, uint16_t LastNumber
                             else
                             {                           
                                 State = NO_HASH; 
-                                Number++;
                             }                            
                         }
                     break;                                                                                
